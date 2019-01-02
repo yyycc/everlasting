@@ -1,12 +1,98 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>ever</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+<html xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" http-equiv="Access-Control-Allow-Origin" content="*">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>ever</title>
+</head>
+<body>
+<div id="app"></div>
+<!-- built files will be auto injected -->
+<div id="test" style="display: none">
+  <div id="fifth">
+    <input type="checkbox" v-model="seen" id="c1" style="float: left">
+    <p v-if="seen">you can see me now</p>
+  </div>
+  <div id="sixth">
+    <pre><a v-bind:href="url">ever's home</a></pre>
+  </div>
+
+  <div id="seventh">
+    <a v-on:click="doSth">do something</a>
+    <p>{{ meg }}</p>
+    <button @click.once="reverse">reverse the message</button>
+  </div>
+
+  <div id="eighth" v-if="ok">
+    <p>{{ message | capitalize('Um... ') }}</p>
+    <input v-model="message">
+    <h1>Monday</h1>
+    <h2>Tuesday</h2>
+    <div v-if="vif">
+      <h1>Wednesday</h1>
+      <h2>Thursday</h2>
+    </div>
+    <input type="checkbox" v-model="vshow" id="c2">
+    <div v-show="vshow">
+      <h1>Friday</h1>
+      <h2>Saturday</h2>
+    </div>
+  </div>
+
+  <div id="ninth">
+    <div v-if="num > 0.8">
+      <p>{{ num }}</p>
+    </div>
+    <div v-else-if="num > 0.6">
+      <p>{{ num | add(3) }}</p>
+    </div>
+    <div v-else-if="num > 0.5">
+      <p>{{ num | add(10) }}</p>
+    </div>
+    <div v-else>
+      <p>{{ num | add(100) }}</p>
+    </div>
+  </div>
+
+  <div id="tenth">
+    <ol>
+      <li v-for="term in terms">
+        <!--{{ term.name }}-->
+        <!--age:{{ term.age }}-->
+        {{ term.sex }}
+      </li>
+      <template v-for="value in object">
+        <li>{{ value }}</li>
+      </template>
+    </ol>
+    <li v-for="(value,key,index) in object">
+      {{ index }}.{{ key }}:{{ value }}
+    </li>
+    <li v-for="n in 10">
+      {{ n }}
+    </li>
+  </div>
+
+  <div id="eleventh">
+    <p>method: {{ reverseM() }}</p>
+    <p>computed: {{ reverseC }}</p>
+  </div>
+
+  <div id="twelfth">
+    <p>{{ site }}</p>
+  </div>
+</div>
+<div id="test-2" style="display: block">
+  <div id="one">
+    <h1>HIGHER</h1>
+    <div v-bind:class="{square:active,'save':colorActive}">
+    </div>
+    <div v-bind:class="[squareClass,dangerClass]">
+    </div>
+  </div>
+  <div id="two">
+    <input type="radio" id="google" value="google" v-model="picked">
+  </div>
+</div>
+</body>
 </html>

@@ -1,6 +1,8 @@
 <template>
   <div class="hello">
     <h1>{{ msg }}</h1>
+    <button @click="goShopping">click me</button>
+    <button @click="fileUpload">upload file</button>
     <h2>Essential Links</h2>
     <ul>
       <li>
@@ -89,6 +91,14 @@ export default {
   data () {
     return {
       msg: 'Welcome to Your Vue.js App'
+    }
+  },
+  methods:{
+    goShopping() {
+      this.$router.push('/Shop')
+    },
+    fileUpload() {
+      this.$router.push('/')
     }
   }
 }
