@@ -3,13 +3,17 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import Shop from '@/components/Shop'
 import File from '@/components/File'
+import Dialogs from '@/components/Dialogs'
 
+Dialogs.install = function(Vue){
+  Vue.component('v-dialog', Dialogs);
+}
+Vue.use(Dialogs)
 Vue.use(Router)
-
 export default new Router({
   routes: [
     {
-      path: '/HelloWorld',
+      path: '/',
       name: 'HelloWorld',
       component: HelloWorld
     },
@@ -19,7 +23,7 @@ export default new Router({
       component: Shop
     },
     {
-      path: '/',
+      path: '/File',
       name: './File',
       component: File
     }

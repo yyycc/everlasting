@@ -98,7 +98,7 @@ export default {
       this.$router.push('/Shop')
     },
     fileUpload() {
-      this.$router.push('/')
+      this.$router.push('/File')
     }
   }
 }

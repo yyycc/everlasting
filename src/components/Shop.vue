@@ -2,6 +2,7 @@
   <div id="shop" style="text-align: center">
     <h1>Let's go to the mall</h1>
     <button @click="goBack">Let's go back</button>
+    <v-dialog v-show="showDialog" :dialog-option="dialogOptions" ref="dialogs"></v-dialog>
     <br>
     go shopping
     <table>
@@ -39,11 +40,29 @@
   export default {
     name: 'Shop',
     data() {
-      return {IPhone_lists}
+      return {
+        IPhone_lists,
+        showDialog: false,
+        dialogOptions: {
+          title: '温馨提示',
+          text: '是否确认跳转',
+          cancelButtonText: '取消',
+          submitButtonText: '确认',
+          isSubmitShow: false,
+          isCancelShow: false
+        }
+      }
     },
     methods: {
       goBack() {
-        this.$router.push('/')
+        // this.$router.push('/');
+        this.showDialog = true;
+        this.$refs.dialogs.confirm().then((data) =>{
+          this.showDialog = false;
+          this.$router.push('/');
+        }).catch((data)=>{
+          this.showDialog = false;
+        })
       },
       totalPrice: function () {
         var total = 0;

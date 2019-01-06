@@ -1,4 +1,4 @@
-<template>
+<template xmlns:v-bind="http://www.w3.org/1999/xhtml">
   <div>
     <button @click="goBack">Let's go to the world</button>
     <br>
@@ -12,6 +12,7 @@
         <th>文件名</th>
         <th>文件大小</th>
         <th>上传时间</th>
+        <th>操作</th>
       </tr>
       <tr v-for="file in fileInfo">
         <td>
@@ -21,7 +22,11 @@
           {{ file.fileSize }}
         </td>
         <td>
-          {{ file.uploadTime }}
+          {{ file.lastUpdateDate }}
+        </td>
+        <td>
+          <!--<a style="display: none">{{ file.fileId }}</a>-->
+          <pre><a v-bind:href="getUrl(file.fileId)">下载</a></pre>
         </td>
       </tr>
     </table>
@@ -30,15 +35,44 @@
 </template>
 <script>
   import {formatDate} from './../common/date';
-  var fileInfo = [];
+
+  var fileInfo = [{fileName: 'ever', fileSize: 222, lastUpdateDate: formatDate(new Date(), 'yyyy-MM-dd'), fileId: 1}];
+  // var fileInfo = [];
   export default ({
     name: 'File',
     data() {
-      return {fileInfo}
+      return {
+        fileInfo,
+        task: '',
+        url: 'http://192.168.10.24:8080/api/sys/file/download?fileId='
+      }
     },
     methods: {
+      getUrl: function (id) {
+        return this.url + id;
+      },
+      queryFiles: function () {
+        // return false;
+        var source = {sourceType: 'ever'};
+        var formData = new FormData();
+        formData.append("sysAttachment", source);
+        var url = 'http://192.168.10.24:8080/api/sys/attachment/query';
+        this.$http.get(url, {params: {sourceType: 'ever'}},
+          {
+            // emulateJson: true
+          }).then(
+          function (res) {
+            var maps = res.body.maps;
+            fileInfo = [];
+            for (let i = 0; i < maps.length; i++) {
+              fileInfo.push(maps[i]);
+            }
+          }, function (e) {
+            alert('请求失败');
+          })
+      },
       goBack: function () {
-        this.$router.push('/HelloWorld');
+        this.$router.push('/');
       },
       upload: function (event) {
         document.getElementById("files").click();
@@ -46,25 +80,53 @@
       uploadFile: function (event) {
         var files = event.target.files;
         var fInfo = [];
+        var formdata = new window.FormData();
         for (var i = 0; i < files.length; i++) {
           var info = {}
           info['fileName'] = files[i].name;
           info['fileSize'] = Number(files[i].size / 1024).toFixed(2) + 'KB';
           info['fileType'] = files[i].type;
-          info['uploadTime'] = formatDate(new Date(), 'yyyy-MM-dd');
+          info['lastUpdateDate'] = formatDate(new Date(), 'yyyy-MM-dd');
           fInfo[i] = info;
-          this.$http.post('/api/update', {taskId: 5,time: info.uploadTime, taskContent:'qqq', status: 'NEW'}).then(function () {
-          }, function () {
-            alert('请求失败');
-          })
+          formdata.append("file", files[i]);
         }
-        // this.$http.get('http://localhost/query/info').then(function (res) {
-        //   this.$data.fileInfo = fInfo;
-        //   var dataList = res;
-        // }, function () {
-        //   alert('请求失败');
-        // })
+        // formdata.append("files",files);
+        var info = [
+          {'name': 'sysAttachment', 'sysAttachment': {'sourceKey': 1, 'sourceType': 'ever'}}
+        ];
+        var source = {'sourceKey': '4', 'sourceType': 'ever'};
+        // info['sourceKey'] = 1;
+        // info['sourceType'] = 'cyy';
+        // formdata.append('sysAttachment', new Blob([JSON.stringify(source)], {type: "application/json;charset=utf-8"}));
+        // formdata.append('')
+        debugger
+        var url = 'http://192.168.10.24:8080/api/sys/file/upload?sourceType=ever&sourceKey=1';
+        // return false;
+        this.$http.post(url, formdata, {
+          headers:
+            {'Content-Type': 'multipart/form-data'}
+        }).then(function (res) {
+          alert("successful～")
+          this.queryFiles();
+        }, function (e) {
+          alert('请求失败');
+        })
       }
+    },
+    created() {
+      this.queryFiles();
+      return false;
+      this.$http.get('http://192.168.10.182/query/info', {params: {taskId: 1, time: '2018'}}, {emulateJson: true}).then(
+        function (res) {
+          this.task = res;
+        }, function (e) {
+          alert('请求失败');
+        })
+      return false;
+
+
+    },
+    mounted() {
     }
   })
 </script>
@@ -90,5 +152,10 @@
 
   th, td {
     border-bottom: 1px solid #ddd;
+  }
+
+  a {
+    text-decoration: none;
+    color: #9cedec;
   }
 </style>

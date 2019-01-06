@@ -8,7 +8,6 @@ import VueResource from 'vue-resource'
 Vue.config.productionTip = false
 Vue.prototype.site = '/api/';
 Vue.use(VueResource)
-
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -16,8 +15,6 @@ new Vue({
   components: {App},
   template: '<App/>'
 })
-
-
 
 
 var lists = [{name: 'cyy', sex: 'M', age: 9}, {name: 'ever', sex: 'F', age: 7}, {name: 'lucy', sex: 'F', age: 8}]
