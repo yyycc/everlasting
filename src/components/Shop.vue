@@ -125,7 +125,7 @@
         return s;
       },
       s2ab(s) {
-        var buf = new ArrayBuffer(s);
+        var buf = new ArrayBuffer(s.length);
         var view = new Uint8Array(buf);
         for (let i = 0; i !== s.length; ++i)
           view[i] = s.charCodeAt(i) & 0xFF;
@@ -154,12 +154,16 @@
         })
         var outputPos = Object.keys(temData);//获取所有有数据的区域
         var tmpWB = {
-          SheetNames: ['sheetOne'],//标题
+          SheetNames: ['sheetOne','sheetTwo'],//标题
           Sheets: {
             'sheetOne': Object.assign({},
               temData,//内容
               {
                 '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1]//设置填充区域
+              }),
+            'sheetTwo': Object.assign({},temData,
+              {
+                '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 10]//设置填充区域
               })
           }
         }
