@@ -34,6 +34,7 @@
   </div>
 </template>
 <script>
+  var baseUrl = 'http://192.168.10.24:8888/';
   import {formatDate} from './../common/date';
 
   var fileInfo = [{fileName: 'ever', fileSize: 222, lastUpdateDate: formatDate(new Date(), 'yyyy-MM-dd'), fileId: 1}];
@@ -44,7 +45,7 @@
       return {
         fileInfo,
         task: '',
-        url: 'http://192.168.10.24:8080/api/sys/file/download?fileId='
+        url: baseUrl + 'api/sys/file/download?fileId='
       }
     },
     methods: {
@@ -56,7 +57,7 @@
         var source = {sourceType: 'ever'};
         var formData = new FormData();
         formData.append("sysAttachment", source);
-        var url = 'http://192.168.10.24:8080/api/sys/attachment/query';
+        var url = baseUrl + 'api/sys/attachment/query';
         this.$http.get(url, {params: {sourceType: 'ever'}},
           {
             // emulateJson: true
@@ -100,7 +101,7 @@
         // formdata.append('sysAttachment', new Blob([JSON.stringify(source)], {type: "application/json;charset=utf-8"}));
         // formdata.append('')
         debugger
-        var url = 'http://192.168.10.24:8080/api/sys/file/upload?sourceType=ever&sourceKey=1';
+        var url = baseUrl + 'api/sys/file/upload?sourceType=ever&sourceKey=1';
         // return false;
         this.$http.post(url, formdata, {
           headers:
