@@ -4,10 +4,15 @@ import HelloWorld from '@/components/HelloWorld'
 import Shop from '@/components/Shop'
 import File from '@/components/File'
 import Dialogs from '@/components/Dialogs'
+import Excels from '@/components/Excels'
 
+Excels.install = function(Vue){
+  Vue.component('v-excel', Excels);
+}
 Dialogs.install = function(Vue){
   Vue.component('v-dialog', Dialogs);
 }
+Vue.use(Excels)
 Vue.use(Dialogs)
 Vue.use(Router)
 export default new Router({
