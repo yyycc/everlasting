@@ -1,4 +1,4 @@
-<template id="dialogs">
+<template>
   <div class="dialog">
     <div class="mask"></div>
     <div class="dialog-content">

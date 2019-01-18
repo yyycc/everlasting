@@ -16,53 +16,6 @@
     },
     data() {
       return {
-        testExcelData: [  // 测试数据
-          {
-            name: '红烧鱼', size: '大', taste: '微辣', price: '40', remain: '100'
-          },
-          {
-            name: '麻辣小龙虾', size: '大', taste: '麻辣', price: '138', remain: '200'
-          },
-          {
-            name: '清蒸小龙虾', size: '大', taste: '清淡', price: '138', remain: '200'
-          },
-          {
-            name: '香辣小龙虾', size: '大', taste: '特辣', price: '138', remain: '200'
-          },
-          {
-            name: '十三香小龙虾', size: '大', taste: '中辣', price: '138', remain: '108'
-          },
-          {
-            name: '蒜蓉小龙虾', size: '大', taste: '中辣', price: '138', remain: '100'
-          },
-          {
-            name: '凉拌牛肉', size: '中', taste: '中辣', price: '48', remain: '60'
-          },
-          {
-            name: '虾仁寿司', size: '大', taste: '清淡', price: '29', remain: '无限'
-          },
-          {
-            name: '海苔寿司', size: '大', taste: '微辣', price: '26', remain: '无限'
-          },
-          {
-            name: '金针菇寿司', size: '大', taste: '清淡', price: '23', remain: '无限'
-          },
-          {
-            name: '泡菜寿司', size: '大', taste: '微辣', price: '24', remain: '无限'
-          },
-          {
-            name: '鳗鱼寿司', size: '大', taste: '清淡', price: '28', remain: '无限'
-          },
-          {
-            name: '肉松寿司', size: '大', taste: '清淡', price: '22', remain: '无限'
-          },
-          {
-            name: '三文鱼寿司', size: '大', taste: '清淡', price: '30', remain: '无限'
-          },
-          {
-            name: '蛋黄寿司', size: '大', taste: '清淡', price: '20', remain: '无限'
-          }
-        ],
         outFile:''
       }
     },
@@ -101,13 +54,14 @@
               position: (j > 25 ? this.getCharCode(j) : String.fromCharCode(65 + j)) + (i + 1)
             })))
         // temp为每个数据对应excel的位置A0-..
+        json.splice(0,1);
         temp = temp.reduce((prev, next) => prev.concat(next));
         temp.forEach((v, i) => temData[v.position] = {
           v: v.v
         });
         var outputPos = Object.keys(temData);//获取所有有数据的区域
         var tmpWB = {
-          SheetNames: ['sheetOne','sheetTwo'],//标题
+          SheetNames: ['sheetOne'],//标题
           Sheets: {
             'sheetOne': Object.assign({},
               temData,//内容
@@ -115,14 +69,14 @@
                 '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 1],//设置填充区域 例"A1:E6"
                 '!cols': [{wch:14}]//设置行宽
               }),
-            'sheetTwo': Object.assign({},temData,
-              {
-                '!ref': outputPos[0] + ':' + 'F16',//设置填充区域
-                'F2': {f:'D2'}//设置数据
-                // '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 5]//设置填充区域
-              })
+            // 'sheetTwo': Object.assign({},temData,
+            //   {
+            //     '!ref': outputPos[0] + ':' + 'F16',//设置填充区域
+            //     'F2': {f:'D2'}//设置数据
+            //     // '!ref': outputPos[0] + ':' + outputPos[outputPos.length - 5]//设置填充区域
+            //   })
           }
-        }
+        };
         //创建二进制对象，传入转换好的字节流
         let tmpDown = new Blob([this.s2ab(XLSX.write(tmpWB, {
           bookType: (type === undefined ? 'xlsx' : type), bookSST: false, type: 'binary'

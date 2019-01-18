@@ -3,6 +3,7 @@
     <h1>{{ msg }}</h1>
     <button @click="goShopping">click me</button>
     <button @click="fileUpload">upload file</button>
+    <button @click="gridMake">to grid</button>
     <h2>Essential Links</h2>
     <ul>
       <li>
@@ -99,6 +100,9 @@ export default {
     },
     fileUpload() {
       this.$router.push('/File')
+    },
+    gridMake() {
+      this.$router.push('/Grids')
     }
   }
 }

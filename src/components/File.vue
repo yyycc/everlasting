@@ -1,6 +1,7 @@
-<template xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<template xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
   <div>
     <button @click="goBack">Let's go to the world</button>
+    <v-dialog v-show="showDialog" :dialog-option="dialogOptions" ref="dialogs"></v-dialog>
     <br>
     <br>
     <input type="file" id="files" name="files" multiple="multiple" style="display: none" @change="uploadFile($event)">
@@ -43,6 +44,15 @@
     name: 'File',
     data() {
       return {
+        showDialog: false,
+        dialogOptions: {
+          title: '温馨提示',
+          text: '上传成功啦～',
+          cancelButtonText: '取消',
+          submitButtonText: '确认',
+          isSubmitShow: false,
+          isCancelShow: true
+        },
         fileInfo,
         task: '',
         url: baseUrl + 'api/sys/file/download?fileId='
@@ -100,24 +110,38 @@
         // info['sourceType'] = 'cyy';
         // formdata.append('sysAttachment', new Blob([JSON.stringify(source)], {type: "application/json;charset=utf-8"}));
         // formdata.append('')
-        debugger
         var url = baseUrl + 'api/sys/file/upload?sourceType=ever&sourceKey=1';
         // return false;
         this.$http.post(url, formdata, {
           headers:
             {'Content-Type': 'multipart/form-data'}
         }).then(function (res) {
-          alert("successful～")
-          this.queryFiles();
+          this.showDialog = true;
+          this.$refs.dialogs.confirm().then((data) => {
+            this.showDialog = false;
+            // this.$router.push('/');
+          }).catch((data) => {
+            this.showDialog = false;
+          })
+          // this.queryFiles();
         }, function (e) {
           alert('请求失败');
         })
       }
     },
     created() {
-      this.queryFiles();
-      return false;
-      this.$http.get('http://192.168.10.182/query/info', {params: {taskId: 1, time: '2018'}}, {emulateJson: true}).then(
+      // this.queryFiles();
+      // return false;
+      // this.$http.get('http://192.168.10.182/query/info', {params: {taskId: 1, time: '2018'}}, {emulateJson: true}).then(
+      //   function (res) {
+      //     this.task = res;
+      //   }, function (e) {
+      //     alert('请求失败');
+      //   });
+      this.$http.get('http://192.168.10.24:8888/api/temp/test/query?page=1&pageSize=41000', {
+        headers:
+          {'Content-Type': 'application/json;charset=utf-8'}
+      }).then(
         function (res) {
           this.task = res;
         }, function (e) {

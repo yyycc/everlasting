@@ -7,7 +7,15 @@
     <!--弹出框-->
     <br>
     go shopping
-    <!--<button class="button" @click="downloadFile(excelData)">excel导出</button>-->
+
+
+    <input type="file" @change="importFile($event)" id="myFile" style="display: none;"
+           accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+    <input type="file" v-on:change="test($event)" id="testFile"><!--是可以进到onload方法的呀，为什么excel的不行呢-->
+    <button class="button" @click="uploadFile()">excel导入</button>
+
+
+
     <v-excel v-show="showExcel" ref="excel" :excel-data="excelData" :excel-name="excelName"></v-excel>
     <table>
       <tr>
@@ -36,6 +44,7 @@
 </template>
 
 <script>
+  var XLSX = require('xlsx');
   var IPhone_lists = [
     {id: 1, name: 'iphone8', price: 5499, count: 6},
     {id: 2, name: 'iphone8P', price: 6799, count: 6},
@@ -50,6 +59,11 @@
     name: 'Shop',
     data() {
       return {
+        myFile:'',
+        testFile: '',
+        rABS: false,
+        wb: {},
+        textContent:'',
         IPhone_lists,
         showDialog: false,
         showExcel: true,
@@ -113,6 +127,47 @@
       }
     },
     methods: {
+      fixdata: function (data) {  // 文件流转BinaryString
+        var o = '';
+        var l = 0;
+        var w = 10240;
+        for (; l < data.byteLength / w; ++l) {
+          o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w, l * w + w)))
+        }
+        o += String.fromCharCode.apply(null, new Uint8Array(data.slice(l * w)));
+        return o
+      },
+      /*excel 导入*/
+      uploadFile() {
+        this.myFile.click();
+      },
+      test(){
+        debugger
+        let file = document.getElementById("testFile").files[0];
+        let reader = new FileReader();
+        let $t = this;
+        reader.onload = function(e) {
+          debugger
+          $t.textContent = e.target.result;
+        };
+        reader.readAsText(file);
+      },
+      importFile() {
+        debugger
+        var obj = this.myFile;
+        var f = obj.files[0];
+        if (!obj.files)return false;
+        var reader = new FileReader();
+        var $t = this;
+        reader.onload = function (e) {
+          debugger
+          let data = e.target.result;
+          $t.wb = XLSX.read(btoa($t.fixdata(data)),{type: 'base64'});
+          /*数据读到了，然后展示出来就可以啦*/
+        };
+        // reader.readAsBinaryString(f);
+        reader.readAsArrayBuffer(f);
+      },
       goBack() {
         // this.$router.push('/');
         this.showDialog = true;
@@ -130,6 +185,9 @@
         }
         return total;
       }
+    },
+    mounted() {
+        this.myFile = document.getElementById("myFile");
     }
   }
 </script>
