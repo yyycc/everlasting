@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
+import Login from '@/components/Login'
 import Shop from '@/components/Shop'
 import File from '@/components/File'
 import Dialogs from '@/components/Dialogs'
@@ -9,19 +10,24 @@ import Grids from '@/components/Grids'
 
 Excels.install = function(Vue){
   Vue.component('v-excel', Excels);
-}
+};
 Dialogs.install = function(Vue){
   Vue.component('v-dialog', Dialogs);
-}
-Vue.use(Excels)
-Vue.use(Dialogs)
-Vue.use(Router)
+};
+Vue.use(Excels);
+Vue.use(Dialogs);
+Vue.use(Router);
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/HelloWorld',
       name: 'HelloWorld',
       component: HelloWorld
+    },
+    {
+      path: '/',
+      name: 'Login',
+      component: Login
     },
     {
       path: '/Shop',
