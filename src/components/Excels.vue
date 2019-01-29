@@ -20,8 +20,8 @@
       }
     },
     methods: {
+      /*将指定的自然数转换为26进制表示。映射关系：[0-25] -> [A-Z]*/
       getCharCode(n) {
-        /*将指定的自然数转换为26进制表示。映射关系：[0-25] -> [A-Z]*/
         let s = '', m = 0;
         while (n > 0) {
           m = n % 26 + 1;
@@ -29,6 +29,10 @@
           n = (n - m) / 26;
         }
         return s;
+      },
+      // 26进制转为自然数
+      setCharCode(s) {
+
       },
       //字符串转字节流
       s2ab(s) {
@@ -52,7 +56,7 @@
             Object.assign({}, {
               v: v[k],
               position: (j > 25 ? this.getCharCode(j) : String.fromCharCode(65 + j)) + (i + 1)
-            })))
+            })));
         // temp为每个数据对应excel的位置A0-..
         json.splice(0,1);
         temp = temp.reduce((prev, next) => prev.concat(next));
@@ -93,7 +97,7 @@
 
 </script>
 
-<style>
+<style scoped>
   img {
     width: 30px;
     cursor: pointer;

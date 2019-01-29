@@ -36,6 +36,7 @@
 </template>
 <script>
   var baseUrl = 'http://192.168.10.24:8888/';
+  var gcpUrl = 'http://104.198.87.241:8088/ever/';
   import {formatDate} from './../common/date';
 
   var fileInfo = [{fileName: 'ever', fileSize: 222, lastUpdateDate: formatDate(new Date(), 'yyyy-MM-dd'), fileId: 1}];
@@ -83,7 +84,7 @@
           })
       },
       goBack: function () {
-        this.$router.push('/');
+        this.$router.push('/Home');
       },
       upload: function (event) {
         document.getElementById("files").click();
@@ -131,13 +132,14 @@
     },
     created() {
       // this.queryFiles();
-      // return false;
-      // this.$http.get('http://192.168.10.182/query/info', {params: {taskId: 1, time: '2018'}}, {emulateJson: true}).then(
-      //   function (res) {
-      //     this.task = res;
-      //   }, function (e) {
-      //     alert('请求失败');
-      //   });
+      return false;
+      this.$http.get(gcpUrl + 'role/query', {params: {roleName: 'ever'}}).then(
+        function (res) {
+          this.task = res;
+        }, function (e) {
+          alert('请求失败');
+        });
+      return false;
       this.$http.get('http://192.168.10.24:8888/api/temp/test/query?page=1&pageSize=41000', {
         headers:
           {'Content-Type': 'application/json;charset=utf-8'}

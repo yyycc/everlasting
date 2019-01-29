@@ -173,7 +173,7 @@
         this.showDialog = true;
         this.$refs.dialogs.confirm().then((data) => {
           this.showDialog = false;
-          this.$router.push('/');
+          this.$router.push('/Home');
         }).catch((data) => {
           this.showDialog = false;
         })
@@ -193,6 +193,9 @@
 </script>
 
 <style scoped>
+  body {
+    background-color: #ffffff;
+  }
   table {
     border: 1px solid black;
   }

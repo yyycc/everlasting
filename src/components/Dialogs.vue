@@ -81,12 +81,12 @@
   .title {
     font-size: 16px;
     font-weight: 600;
-    line-height: 30px;
+    line-height: 40px;
   }
 
   .text {
     font-size: 14px;
-    line-height: 30px;
+    line-height: 40px;
     color: #555;
   }
 
