@@ -3,7 +3,7 @@
     <button @click="goBack">Let's go to the world</button>
     <div class="grid-title">
       <label>Search</label>
-      <input type="text" v-model="searchContent">
+      <input type="text" v-model="filterKey">
       <img src="../../src/assets/logo.png">
       <span class="grid-title">{{ gridTitle }}</span>
     </div>
@@ -20,8 +20,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="datas in gridData">
-          <!--<td v-for="item in columns" :style="'text-align:'+item.textAlign" v-if="!datas[item.field]"></td>-->
+        <tr v-for="datas in filteredData">
           <td v-for="item in columns" :style="'text-align:'+item.textAlign">{{ datas[item.field] }}
           </td>
         </tr>
@@ -41,67 +40,9 @@
     data() {
       return {
         tableId: "gridTest",
-        searchContent: '',
+        filterKey: '',
         sortOrders: {},
         sortKey: '',
-        gridDataOrigin: [],
-        /*gridTitle: 'TEST-GRID',
-        columns: [
-          {
-            field: 'index', title: '序号', width: '50px', template: function (rowData, cellsData, rowIndex) {
-              return rowIndex;
-            }
-          },
-          {field: 'name', title: '姓名', width: '50px', columnAlign: 'center', textAlign: 'left'},
-          {
-            field: 'school', title: '学校', width: '50px', columnAlign: 'center', textAlign: 'left',
-            template: function (rowData, cellsData) {
-              return cellsData;
-            }
-          },
-          {field: 'address', title: '地址', width: '50px', columnAlign: 'center', textAlign: 'left'},
-          {
-            field: 'direction', title: '地区', width: '50px', columnAlign: 'center', textAlign: 'left',
-            template: function (rowData, cellsData, rowIndex) {
-              if (rowData.address === '浙江')
-                return '南方';
-              return '北方';
-            }
-          },
-          {field: 'age', title: '年龄', width: '50px', columnAlign: 'center', textAlign: 'left', type: 'number'},
-          {
-            field: 'sex', title: '性别', width: '50px', columnAlign: 'center', textAlign: 'left',
-            template: function (rowData, cellsData, rowIndex) {
-              if (cellsData == 'F' || cellsData == '女')
-                return '女';
-              else if (cellsData == 'M' || cellsData == '男')
-                return '男'
-            }
-          },
-          {field: 'class', title: '班级', width: '50px', columnAlign: 'right', textAlign: 'right', type: 'number'},
-          {field: 'grade', title: '年级', width: '100px', columnAlign: 'left', textAlign: 'left'}],
-        gridData: [{name: 'cyy', school: 'J大学', address: '江苏', age: '18', sex: 'F', class: '1', grade: 'one'},
-          {name: 'ever', school: 'B大学', address: '浙江', age: '19', sex: 'M', class: '2', grade: 'two'},
-          {name: 'sy', school: 'A大学', address: '上海', age: '5', sex: 'F', class: '3', grade: 'three'},
-          {name: 'qw', school: 'A大学', address: '上海', age: '22', sex: 'F', class: '4', grade: 'four'},
-          {name: 're', school: 'C大学', address: '云南', age: '18', sex: 'M', class: '5', grade: 'five'},
-          {name: 'ro', school: 'A大学', address: '广州', age: '20', sex: 'F', class: '6', grade: 'six'},
-          {name: 'rt', school: 'D大学', address: '山东', age: '18', sex: 'M', class: '7', grade: 'seven'},
-          {name: 'vf', school: 'A大学', address: '湖南', age: '20', sex: 'F', class: '8', grade: 'eight'},
-          {name: 'rth', school: 'F大学', address: '海南', age: '19', sex: 'M', class: '9', grade: 'nine'},
-          {name: 'yhj', school: 'Z大学', address: '内蒙古', age: '20', sex: 'F', class: '10', grade: 'ten'}
-        ],
-        gridDataOrigin: [{name: 'cyy', school: 'J大学', address: '江苏', age: '18', sex: 'F', class: '1', grade: 'one'},
-          {name: 'ever', school: 'B大学', address: '浙江', age: '19', sex: 'M', class: '2', grade: 'two'},
-          {name: 'sy', school: 'A大学', address: '上海', age: '5', sex: 'F', class: '3', grade: 'three'},
-          {name: 'qw', school: 'A大学', address: '上海', age: '22', sex: 'F', class: '4', grade: 'four'},
-          {name: 're', school: 'C大学', address: '云南', age: '18', sex: 'M', class: '5', grade: 'five'},
-          {name: 'ro', school: 'A大学', address: '广州', age: '20', sex: 'F', class: '6', grade: 'six'},
-          {name: 'rt', school: 'D大学', address: '山东', age: '18', sex: 'M', class: '7', grade: 'seven'},
-          {name: 'vf', school: 'A大学', address: '湖南', age: '20', sex: 'F', class: '8', grade: 'eight'},
-          {name: 'rth', school: 'F大学', address: '海南', age: '19', sex: 'M', class: '9', grade: 'nine'},
-          {name: 'yhj', school: 'Z大学', address: '内蒙古', age: '20', sex: 'F', class: '10', grade: 'ten'}
-        ],*/
         data: [],
       }
     },
@@ -119,12 +60,8 @@
       goBack() {
         this.$router.push('/Home');
       },
-      indexTemplate() {
-        return 666;
-      },
       /*排序*/
       orderList(e, index, tem) {
-        debugger
         if (tem) return false;
         var self = this;
         this.sortKey = e;
@@ -137,9 +74,6 @@
               return -order;
             return order;
           });
-          /*this.gridData.sort((next,prev) => {
-            return Number(next[e]) - Number(prev[e]);
-          });*/
         else
           this.gridData.sort((lat, pre) => {
             if (pre[e] > lat[e])
@@ -147,38 +81,37 @@
             return order;
           });
       },
-    },
-    watch: {
-      /*查询*/
-      searchContent: function () {
-        var content = this.searchContent;
-        var newData = [];
-        var $t = this;
-        if (content === '')
-          this.gridData = this.gridDataOrigin;
-        else {
-          this.gridDataOrigin.map((v, i) => {
-            for (let j = 0; j < $t.columns.length; j++) {
-              if (v[$t.columns[j].field] && v[$t.columns[j].field].indexOf(content) >= 0) {
-                newData.push(v);
-                continue;
-              }
-            }
-          });
-          this.gridData = newData;
-        }
+      /*排序*/
+      sortBy(key,index,temp){
+        this.sortKey = key;
+        this.sortOrders[key] = this.sortOrders[key] * -1;
       }
     },
     computed: {
-      styleChange: function (item) {
-        return 'width: 85px';
+      filteredData: function () {
+        /*在此处进行排序和搜索*/
+        let sortKey = this.sortKey;
+        let filterKey = this.filterKey && this.filterKey.toLowerCase();
+        var data = this.gridData;
+        var order = this.sortOrders[sortKey] || 1;
+        if (sortKey){
+          data = data.slice().sort(function (a,b) {
+            a = a[sortKey];
+            b = b[sortKey];
+            return (a === b ? 0 : a > b ? 1 : -1) * order;
+          })
+        }
+        if (filterKey){
+          /*filter 返回满足条件的元素  some 检查是否有满足条件的元素*/
+          data = data.filter((row) => Object.keys(row).some((key) => String(row[key]).toLowerCase().indexOf(filterKey) > -1));
+        }
+        return data;
       }
     },
     created() {
       this.columns.forEach(v => {
         this.sortOrders[v['field']] = 1;
       });
-      this.gridDataOrigin = this.gridData;
     },
     mounted() {
       this.templateRow(this);
@@ -193,6 +126,7 @@
   }
 
   .table-wrapper {
+    width: 80%;
     margin: auto;
     overflow: auto;
   }
