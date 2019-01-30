@@ -12,7 +12,7 @@
         <thead>
         <tr>
           <th v-for="(item,index) in columns" v-bind:name="item.value"
-              v-on:click="orderList(item.field,index,!!item.template)"
+              v-on:click="sortBy(item.field,index,!!item.template)"
               v-bind:class="{active: sortKey == item.field, pointer: !item.template}"
               v-bind:style="'width:'+ item.width +';text-align:'+item.columnAlign">{{ item.title }}
             <span :class="[{'arrow': !item.template},sortOrders[item.field]>0 ? 'asc' : 'dsc']"></span>
@@ -20,13 +20,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="datas in filteredData">
-          <td v-for="item in columns" :style="'text-align:'+item.textAlign">{{ datas[item.field] }}
+        <tr v-for="entry in filteredData">
+          <td v-for="item in columns" :style="'text-align:'+item.textAlign">{{ entry[item.field] }}
           </td>
         </tr>
         </tbody>
       </table>
     </div>
+    <!--分页-->
+    <v-page v-show="pageHelp" :total="total" :page-index="page" :page-size="pageSize"
+            v-on:current-page="fromPage"></v-page>
   </div>
 </template>
 <script>
@@ -36,6 +39,9 @@
       gridTitle: String,
       columns: Array,
       gridData: Array,
+      pageHelp: Boolean,
+      page: Number,
+      pageSize: Number
     },
     data() {
       return {
@@ -44,9 +50,16 @@
         sortOrders: {},
         sortKey: '',
         data: [],
+        orderCom: [1],
+        total: 0,
+        currentPage: 0
       }
     },
+    watch: {},
     methods: {
+      fromPage: function (page) {
+        this.currentPage = page;
+      },
       templateRow: function (self) {
         var tr = document.getElementById(self.tableId).getElementsByTagName('tr');
         for (let i = 1; i < tr.length; i++) {
@@ -61,49 +74,49 @@
         this.$router.push('/Home');
       },
       /*排序*/
-      orderList(e, index, tem) {
-        if (tem) return false;
-        var self = this;
-        this.sortKey = e;
-        var order = this.sortOrders[e];
-        this.sortOrders[e] = this.sortOrders[e] * -1;
-        //数字类型按照数字大小排序
-        if (this.columns[index]['type'] === 'number')
-          this.gridData.sort((lat, pre) => {
-            if (Number(pre[e]) > Number(lat[e]))
-              return -order;
-            return order;
-          });
-        else
-          this.gridData.sort((lat, pre) => {
-            if (pre[e] > lat[e])
-              return -order;
-            return order;
-          });
-      },
-      /*排序*/
-      sortBy(key,index,temp){
+      sortBy(key, index, temp) {
+        this.orderCom = [this.orderCom[0] + 1];
         this.sortKey = key;
         this.sortOrders[key] = this.sortOrders[key] * -1;
       }
     },
     computed: {
       filteredData: function () {
+        this.total = this.gridData.length;
+        let total = this.total;
+        let page = this.page || 1;
+        let pageSize = this.pageSize;
+        if (this.currentPage !== 0)
+          page = this.currentPage;
         /*在此处进行排序和搜索*/
+        /*sortOrders改变后不仅此方法which I don't know why 所以加了一个变量*/
+        let fix = this.orderCom;
         let sortKey = this.sortKey;
         let filterKey = this.filterKey && this.filterKey.toLowerCase();
-        var data = this.gridData;
-        var order = this.sortOrders[sortKey] || 1;
-        if (sortKey){
-          data = data.slice().sort(function (a,b) {
+        let order = this.sortOrders[sortKey] || 1;
+        let data = this.gridData;
+        let columns = this.columns;
+        if (sortKey) {
+          data = data.slice().sort(function (a, b) {
             a = a[sortKey];
             b = b[sortKey];
+            var temp = columns.filter((row) => Object.keys(row).some((key) => String(row[key]) === sortKey));
+            if (temp.length > 0 && temp[0].type !== undefined && temp[0].type === 'number') {
+              a = Number(a);
+              b = Number(b);
+            }
             return (a === b ? 0 : a > b ? 1 : -1) * order;
           })
         }
-        if (filterKey){
+        if (filterKey) {
           /*filter 返回满足条件的元素  some 检查是否有满足条件的元素*/
           data = data.filter((row) => Object.keys(row).some((key) => String(row[key]).toLowerCase().indexOf(filterKey) > -1));
+        }
+        if (pageSize) {
+          let start = (page - 1) * pageSize;
+          let end = page * pageSize;
+          if (end > total) end = total;
+          data = data.slice(start,end)
         }
         return data;
       }

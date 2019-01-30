@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-excelImport :columns="columns" v-on:return-data="fromChild"></v-excelImport>
-    <v-grid :columns="columns" :grid-title="gridTitle" :grid-data="data"></v-grid>
+    <v-excelImport :columns="columns" v-on:return-data="fromExcel"></v-excelImport>
+    <v-grid :columns="columns" :grid-title="gridTitle" :grid-data="data" :page-help="pageHelp" :page="page" :page-size="pageSize"></v-grid>
   </div>
 </template>
 
@@ -17,7 +17,7 @@
           {field: 'dateTo', title: '结束日', width: '50px', type: 'date'},
           {field: 'planCycle', title: '计划周期', width: '50px'},
           {field: 'projectNumber', title: '项目编号', width: '50px'},
-          {field: 'projectName', title: '项目名称', width: '100px'},
+          {field: 'projectName', title: '项目名称', width: '110px'},
           {field: 'businessType', title: '业务类型', width: '50px'},
           {field: 'projectAmount', title: '项目金额', width: '50px', type: 'number'},
           {field: 'company', title: '公司', width: '50px'},
@@ -27,10 +27,13 @@
           {field: 'description', title: '备注', width: '50px'}
         ],
         gridTitle: '投放计划',
+        pageHelp: true,
+        page: 1,
+        pageSize: 5
       }
     },
     methods: {
-      fromChild: function (data) {
+      fromExcel: function (data) {
         this.data = data;
       }
     }
@@ -39,6 +42,6 @@
 
 <style>
   table {
-    width: 160% !important;
+    /*width: 160% !important;*/
   }
 </style>

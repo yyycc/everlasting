@@ -6,6 +6,7 @@
     <div @click="login"><p>Login</p></div>
     <div @click="helloWorld"><p>HelloWord</p></div>
     <div @click="excelShow"><p>excelShow</p></div>
+    <div @click="pages"><p>pages</p></div>
   </div>
 </template>
 
@@ -33,6 +34,9 @@
       },
       excelShow: function () {
         this.$router.push('/ExcelShow');
+      },
+      pages: function () {
+        this.$router.push('/Pages');
       },
     }
   })

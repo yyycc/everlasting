@@ -41,10 +41,10 @@
     },
     methods: {
       submit() {
-        this.resolve('Yyy');
+        this.resolve('confirm');
       },
       cancel() {
-        this.reject('Yyy');
+        this.reject('cancel');
       },
       confirm(message) {
         this.promise = new Promise((resolve, reject)=>{

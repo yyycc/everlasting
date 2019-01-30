@@ -9,6 +9,10 @@ import Excels from '@/components/Excels'
 import Grids from '@/components/Grids'
 import Home from '@/components/Home'
 import ExcelImport from '@/components/ExcelImport'
+import Pages from '@/components/Pages'
+
+
+
 import ExcelShow from '@/components/ExcelShow'
 
 Excels.install = function(Vue){
@@ -23,11 +27,16 @@ ExcelImport.install = function(Vue){
 Grids.install = function(Vue){
   Vue.component('v-grid', Grids);
 };
+
+Pages.install = function(Vue){
+  Vue.component('v-page', Pages);
+};
 Vue.use(Excels);
 Vue.use(Dialogs);
 Vue.use(Router);
 Vue.use(ExcelImport);
 Vue.use(Grids);
+Vue.use(Pages);
 
 export default new Router({
   routes: [
@@ -65,6 +74,11 @@ export default new Router({
       path: '/ExcelShow',
       name: './ExcelShow',
       component: ExcelShow
+    },
+    {
+      path: '/Pages',
+      name: './Pages',
+      component: Pages
     }
   ]
 })

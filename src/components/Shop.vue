@@ -1,4 +1,4 @@
-<template xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<template xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
   <div id="shop" style="text-align: center">
     <h1>Let's go to the mall</h1>
     <button @click="goBack">Let's go back</button>
@@ -171,7 +171,8 @@
       goBack() {
         // this.$router.push('/');
         this.showDialog = true;
-        this.$refs.dialogs.confirm().then((data) => {
+        this.$refs.dialogs.confirm().then(data => {
+          /*data是resolve或reject函数调用时带的参数*/
           this.showDialog = false;
           this.$router.push('/Home');
         }).catch((data) => {

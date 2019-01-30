@@ -132,14 +132,14 @@
     },
     created() {
       // this.queryFiles();
-      return false;
+      /*return false;
       this.$http.get(gcpUrl + 'role/query', {params: {roleName: 'ever'}}).then(
         function (res) {
           this.task = res;
         }, function (e) {
           alert('请求失败');
         });
-      return false;
+      return false;*/
       this.$http.get('http://192.168.10.24:8888/api/temp/test/query?page=1&pageSize=41000', {
         headers:
           {'Content-Type': 'application/json;charset=utf-8'}

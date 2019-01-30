@@ -43,7 +43,6 @@
         var reader = new FileReader();
         var $t = this;
         reader.onload = function (e) {
-          debugger
           let data = e.target.result;
           $t.wb = XLSX.read(btoa($t.fixdata(data)), {type: 'base64'})
           /*处理数据*/
@@ -55,7 +54,6 @@
             }
           }
           let json = XLSX.utils.sheet_to_json($t.wb.Sheets[$t.wb.SheetNames[0]]);//这就直接转换好啦，太扯了吧，哼。。。
-          // let key = Object.keys(json[0]);
           var returnData = [];
           json.map((v, i) => {
             var temp = {};
