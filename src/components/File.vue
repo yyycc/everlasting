@@ -148,7 +148,7 @@
           this.task = res;
         }, function (e) {
           alert('请求失败');
-        })
+        });
       return false;
 
 

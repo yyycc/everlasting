@@ -70,6 +70,7 @@
       },
       visit: function () {
         this.$router.push('/Home');
+        window.location.reload();
       },
       forget: function () {
         this.showDialog = true;

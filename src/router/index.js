@@ -10,10 +10,9 @@ import Grids from '@/components/Grids'
 import Home from '@/components/Home'
 import ExcelImport from '@/components/ExcelImport'
 import Pages from '@/components/Pages'
-
-
-
+import Select from '@/components/Select'
 import ExcelShow from '@/components/ExcelShow'
+import Ferry from '@/components/QueryFerry'
 
 Excels.install = function(Vue){
   Vue.component('v-excel', Excels);
@@ -79,6 +78,16 @@ export default new Router({
       path: '/Pages',
       name: './Pages',
       component: Pages
+    },
+    {
+      path: '/Select',
+      name: './Select',
+      component: Select
+    },
+    {
+      path: '/Ferry',
+      name: './Ferry',
+      component: Ferry
     }
   ]
 })

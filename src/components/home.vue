@@ -7,6 +7,8 @@
     <div @click="helloWorld"><p>HelloWord</p></div>
     <div @click="excelShow"><p>excelShow</p></div>
     <div @click="pages"><p>pages</p></div>
+    <div @click="select"><p>select</p></div>
+    <div @click="ferry"><p>ferry</p></div>
   </div>
 </template>
 
@@ -38,6 +40,12 @@
       pages: function () {
         this.$router.push('/Pages');
       },
+      select: function () {
+        this.$router.push('/Select');
+      },
+      ferry: function () {
+        this.$router.push('/Ferry');
+      }
     }
   })
 </script>

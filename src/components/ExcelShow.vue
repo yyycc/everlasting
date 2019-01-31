@@ -1,7 +1,8 @@
 <template>
   <div>
     <v-excelImport :columns="columns" v-on:return-data="fromExcel"></v-excelImport>
-    <v-grid :columns="columns" :grid-title="gridTitle" :grid-data="data" :page-help="pageHelp" :page="page" :page-size="pageSize"></v-grid>
+    <v-grid :columns="columns" :grid-title="gridTitle" :grid-data="data"
+            :page-help="pageHelp" :page="page" :page-size="pageSize" :total="total" :excel-import="excelImport"></v-grid>
   </div>
 </template>
 
@@ -10,7 +11,7 @@
     data() {
       return {
         data: [],
-        columns: [
+        /*columns: [
           {field: 'applyNumber', title: '资金申请编号', width: '100px'},
           {field: 'applyPerson', title: '申请人', width: '50px'},
           {field: 'dateFrom', title: '开始日', width: '50px', type: 'date'},
@@ -25,16 +26,25 @@
           {field: 'applyAmount', title: '申请投放金额', width: '100px', type: 'number'},
           {field: 'actualAmount', title: '实际投放金额合计', width: '120px', type: 'number'},
           {field: 'description', title: '备注', width: '50px'}
+        ],*/
+        columns: [
+          {field: 'id', title: 'id',type: 'date'},
+          {field: 'code', title: '编码', width: '25%'},
+          {field: 'name', title: '用户名', width: '25%'},
+          {field: 'birthDate', title: '出生日期', width: '25%'}
         ],
         gridTitle: '投放计划',
         pageHelp: true,
         page: 1,
-        pageSize: 5
+        pageSize: 5,
+        total: 0,
+        excelImport: true
       }
     },
     methods: {
       fromExcel: function (data) {
         this.data = data;
+        this.total = data.length;
       }
     }
   })

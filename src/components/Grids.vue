@@ -1,11 +1,12 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
   <div>
-    <button @click="goBack">Let's go to the world</button>
+    <v-excel v-show="showExcel" ref="excel" :excel-data="excelData" :excel-name="excelName"></v-excel>
     <div class="grid-title">
-      <label>Search</label>
-      <input type="text" v-model="filterKey">
-      <img src="../../src/assets/logo.png">
-      <span class="grid-title">{{ gridTitle }}</span>
+      <span class="grid-title-name">{{ gridTitle }}</span>
+      <div class="grid-search">
+        <label>Search</label>
+        <input type="text" v-model="filterKey">
+      </div>
     </div>
     <div class="table-wrapper">
       <table v-bind:id="tableId">
@@ -28,7 +29,7 @@
       </table>
     </div>
     <!--分页-->
-    <v-page v-show="pageHelp" :total="total" :page-index="page" :page-size="pageSize"
+    <v-page v-show="pageHelp" :total="total" :page-index="page" :page-size="pageSize" :per-pages="perPages"
             v-on:current-page="fromPage"></v-page>
   </div>
 </template>
@@ -41,7 +42,13 @@
       gridData: Array,
       pageHelp: Boolean,
       page: Number,
-      pageSize: Number
+      pageSize: Number,
+      perPages: Number,
+      total: Number,
+      excelImport: {type: Boolean, default: false},
+      showExcel: Boolean,
+      excelName: String,
+      excelData: Array
     },
     data() {
       return {
@@ -51,21 +58,21 @@
         sortKey: '',
         data: [],
         orderCom: [1],
-        total: 0,
-        currentPage: 0
+        currentPage: 1
       }
     },
     watch: {},
     methods: {
       fromPage: function (page) {
         this.currentPage = page;
+        this.$emit("change-page", page);
       },
       templateRow: function (self) {
         var tr = document.getElementById(self.tableId).getElementsByTagName('tr');
         for (let i = 1; i < tr.length; i++) {
           for (let j = 0; j < self.columns.length; j++) {
             if ('template' in self.columns[j]) {
-              tr[i].getElementsByTagName('td')[j].innerText = self.columns[j].template(this.gridData[i - 1], tr[i].getElementsByTagName('td')[j].innerText, i);
+              tr[i].getElementsByTagName('td')[j].innerText = self.columns[j].template(this.gridData[i - 1], tr[i].getElementsByTagName('td')[j].innerText, i, this);
             }
           }
         }
@@ -75,6 +82,7 @@
       },
       /*排序*/
       sortBy(key, index, temp) {
+        if (temp) return false
         this.orderCom = [this.orderCom[0] + 1];
         this.sortKey = key;
         this.sortOrders[key] = this.sortOrders[key] * -1;
@@ -82,12 +90,6 @@
     },
     computed: {
       filteredData: function () {
-        this.total = this.gridData.length;
-        let total = this.total;
-        let page = this.page || 1;
-        let pageSize = this.pageSize;
-        if (this.currentPage !== 0)
-          page = this.currentPage;
         /*在此处进行排序和搜索*/
         /*sortOrders改变后不仅此方法which I don't know why 所以加了一个变量*/
         let fix = this.orderCom;
@@ -112,11 +114,17 @@
           /*filter 返回满足条件的元素  some 检查是否有满足条件的元素*/
           data = data.filter((row) => Object.keys(row).some((key) => String(row[key]).toLowerCase().indexOf(filterKey) > -1));
         }
-        if (pageSize) {
+        if (this.pageSize && this.excelImport) {
+          let total = this.total;
+          let page = this.page || 1;
+          let pageSize = this.pageSize;
+          if (this.currentPage !== 0)
+            page = this.currentPage;
+
           let start = (page - 1) * pageSize;
           let end = page * pageSize;
           if (end > total) end = total;
-          data = data.slice(start,end)
+          data = data.slice(start, end)
         }
         return data;
       }
@@ -136,6 +144,20 @@
 </script>
 <style scoped>
   .grid-title {
+    width: 80%;
+    margin: auto auto 10px auto;
+    border-bottom: 2px solid #9cedec;
+    text-align: left;
+  }
+
+  .grid-title-name {
+    display: inline-block;
+    font-weight: bold;
+  }
+
+  .grid-search {
+    display: inline-block;
+    float: right;
   }
 
   .table-wrapper {
@@ -151,7 +173,6 @@
 
   table {
     width: 100%;
-    margin: auto;
     border: 1px solid #9cedec;
     table-layout: auto;
   }
