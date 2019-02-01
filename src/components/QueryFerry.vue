@@ -3,11 +3,10 @@
     <v-dialog v-show="errorHint" :dialog-option="dialogOptionsErr" ref="dialogs"></v-dialog>
     <v-dialog v-show="successHint" :dialog-option="dialogOptionsSuc" ref="dialogs"></v-dialog>
     <button @click="queryData">查询</button>
-    <v-excel v-show="showExcel" ref="excel" :excel-data="excelData" :excel-name="excelName"></v-excel>
 
-    <!--<v-grid v-show="gridShow" :columns="columns" :grid-title="gridTitle" :grid-data="data"-->
-            <!--:page-help="pageHelp" :page="page" :page-size="pageSize" :per-pages="perPages" :total="total"-->
-            <!--v-on:change-page="fromGrids" :show-excel="showExcel" :excel-name="excelName" :excel-data="excelData"></v-grid>-->
+    <v-grid v-show="gridShow" :columns="columns" :grid-title="gridTitle" :grid-data="data"
+            :page-help="pageHelp" :page="page" :page-size="pageSize" :per-pages="perPages" :total="total"
+            v-on:change-page="fromGrids" :show-excel="showExcel" :excel-name="excelName" :excel-data="excelData"></v-grid>
   </div>
 </template>
 <script>
@@ -25,7 +24,8 @@
             }},
           {field: 'birthDate', title: '生日',type: 'date',
           template: function (rowData,data) {
-            return (new Date(data)).toLocaleDateString() + (new Date(data)).toLocaleTimeString();
+            // return (new Date(data)).toLocaleDateString() + (new Date(data)).toLocaleTimeString();
+            return (new Date(data)).toLocaleString();
           }},
           {field: 'code', title: '代码', width: '30%'},
           {field: 'name', title: '姓名', width: '15%', type: 'date'},
@@ -71,7 +71,7 @@
     methods: {
       queryData: function () {
         let url = baseUrl + 'api/temp/test/query';
-        let param = {page: this.page, pageSize: 10000};
+        let param = {page: this.page, pageSize: this.pageSize};
         this.$http.get(url, {params: param}).then(
           res => {
             this.successHint = true;
