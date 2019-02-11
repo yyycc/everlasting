@@ -1,7 +1,7 @@
 <template>
   <div>
-    <v-dialog v-show="errorHint" :dialog-option="dialogOptionsErr" ref="dialogs"></v-dialog>
-    <v-dialog v-show="successHint" :dialog-option="dialogOptionsSuc" ref="dialogs"></v-dialog>
+    <v-dialog v-show="errorHint" :dialog-option="dialogOptionsErr" ref="dialogErr"></v-dialog>
+    <v-dialog v-show="successHint" :dialog-option="dialogOptionsSuc" ref="dialogsSuc"></v-dialog>
     <button @click="queryData">查询</button>
 
     <v-grid v-show="gridShow" :columns="columns" :grid-title="gridTitle" :grid-data="data"
@@ -70,12 +70,13 @@
     },
     methods: {
       queryData: function () {
+        debugger
         let url = baseUrl + 'api/temp/test/query';
         let param = {page: this.page, pageSize: this.pageSize};
         this.$http.get(url, {params: param}).then(
           res => {
             this.successHint = true;
-            this.$refs.dialogs.confirm().then(
+            this.$refs.dialogSuc.confirm().then(
               data => {
                 this.successHint = false;
                 this.gridShow = true;
@@ -86,7 +87,11 @@
           },
           e => {
             this.errorHint = true;
-            //TODO
+            this.$refs.dialogErr.confirm().then(
+              data => {
+                this.errorHint = false;
+              }
+            );
           })
       },
       fromGrids: function (page) {
