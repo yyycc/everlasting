@@ -38,7 +38,7 @@ Vue.use(Grids);
 Vue.use(Pages);
 
 export default new Router({
-  base: '/',
+  // base: '/',
   routes: [
     {
       path: '/HelloWorld',
