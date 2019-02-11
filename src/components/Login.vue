@@ -83,6 +83,6 @@
 </script>
 
 <style>
-  @import "/src/assets/css/login.css";
+  @import "../assets/css/login.css";
 </style>
 <!--<style src="../assets/css/login.css"></style>-->
