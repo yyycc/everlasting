@@ -10,7 +10,7 @@
   </div>
 </template>
 <script>
-  var baseUrl = 'http://47.100.232.59/';
+  var baseUrl = 'http://47.100.232.59';
   var gender = [{value: 'FEMALE',name: '女'},{value: 'MALE',name: '男'}];
   export default ({
     name: 'Ferry',
@@ -71,7 +71,7 @@
     methods: {
       queryData: function () {
         debugger
-        let url = baseUrl + 'api/temp/test/query';
+        let url = baseUrl + '/api/query';
         let param = {page: this.page, pageSize: this.pageSize};
         this.$http.get(url, {params: param}).then(
           res => {
@@ -95,7 +95,7 @@
           })
       },
       fromGrids: function (page) {
-        let url = baseUrl + 'api/temp/test/query';
+        let url = baseUrl + '/api/query';
         let param = {page: page, pageSize: this.pageSize};
         this.$http.get(url, {params: param}).then(
           res => this.data = res.body.maps,
