@@ -71,7 +71,7 @@
     methods: {
       queryData: function () {
         debugger
-        let url = baseUrl + '/api/query';
+        let url = baseUrl + '/api/chinese/people/query';
         let param = {page: this.page, pageSize: this.pageSize};
         this.$http.get(url, {params: param}).then(
           res => {
@@ -95,7 +95,7 @@
           })
       },
       fromGrids: function (page) {
-        let url = baseUrl + '/api/query';
+        let url = baseUrl + '/api/chinese/people/query';
         let param = {page: page, pageSize: this.pageSize};
         this.$http.get(url, {params: param}).then(
           res => this.data = res.body.maps,
