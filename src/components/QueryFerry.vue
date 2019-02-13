@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-dialog v-show="errorHint" :dialog-option="dialogOptionsErr" ref="dialogErr"></v-dialog>
-    <v-dialog v-show="successHint" :dialog-option="dialogOptionsSuc" ref="dialogsSuc"></v-dialog>
+    <v-dialog v-show="successHint" :dialog-option="dialogOptionsSuc" ref="dialogSuc"></v-dialog>
     <button @click="queryData">查询</button>
 
     <v-grid v-show="gridShow" :columns="columns" :grid-title="gridTitle" :grid-data="data"
@@ -11,6 +11,7 @@
 </template>
 <script>
   var baseUrl = 'http://47.100.232.59';
+  var homeUrl = 'http://192.168.10.24:8888';
   var gender = [{value: 'FEMALE',name: '女'},{value: 'MALE',name: '男'}];
   export default ({
     name: 'Ferry',
@@ -71,7 +72,7 @@
     methods: {
       queryData: function () {
         debugger
-        let url = baseUrl + '/api/chinese/people/query';
+        let url = homeUrl + '/api/chinese/people/query';
         let param = {page: this.page, pageSize: this.pageSize};
         this.$http.get(url, {params: param}).then(
           res => {
@@ -110,7 +111,7 @@
 </script>
 <style scoped>
   button {
-    background: linear-gradient(top, rgba(254, 231, 154, 1) 0%, rgba(254, 193, 81, 1) 100%);
+    background: -webkit-linear-gradient(top, rgba(254, 231, 154, 1) 0%, rgba(254, 193, 81, 1) 100%);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
     border-radius: 5px;
     border: 1px solid #CFD5D9;
