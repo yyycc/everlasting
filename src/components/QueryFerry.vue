@@ -71,8 +71,7 @@
     },
     methods: {
       queryData: function () {
-        debugger
-        let url = homeUrl + '/api/chinese/people/query';
+        let url = baseUrl + '/api/chinese/people/query';
         let param = {page: this.page, pageSize: this.pageSize};
         this.$http.get(url, {params: param}).then(
           res => {
