@@ -27,6 +27,7 @@
 
 <script>
   var gcpUrl = 'http://104.198.87.241:8088/ever/';
+  var url = 'http://47.100.232.59:6688/';
   export default ({
     name: 'login',
     data() {
@@ -53,20 +54,28 @@
     },
     methods: {
       login: function () {
-        debugger
-        this.$http.get(gcpUrl + 'role/query', {params: {roleName: this.username}}).then(
+        this.$http.post(url + 'api/login',{userCode: this.username, password: this.password}, {
+          headers:
+            {'Content-Type': 'application/json;charset=utf-8'}
+        }).then(
           function (res) {
-            if (res.body.length > 0 && res.body[0] !== null && res.body[0].password === this.password)
-              this.$router.push('/Shop');
-            else{
-              this.showDialog2 = true;
-              this.$refs.dialogs2.confirm().then(() =>
-                this.showDialog2 = false)
+            debugger
+            this.task = res;
+            /*this.$store.commit("set_token",res.body.token);
+            if (this.$store.state.token) {
+              this.$router.push('/HOME');
+              console.log(store.state.token)
+            } else {
+              this.$router.replace('/login');
+            }*/
+            window.localStorage["token"] = res.body.token;
+            if (localStorage.token) {
+              this.$router.push('/HOME');
             }
           }, function (e) {
             alert('请求失败');
           });
-
+        event.preventDefault(); //阻止自动跳转
       },
       visit: function () {
         this.$router.push('/Home');

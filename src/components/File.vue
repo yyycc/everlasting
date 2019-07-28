@@ -1,6 +1,7 @@
 <template xmlns:v-bind="http://www.w3.org/1999/xhtml" xmlns:v-on="http://www.w3.org/1999/xhtml">
   <div>
     <button @click="goBack">Let's go to the world</button>
+    <!-- ref 访问实例-->
     <v-dialog v-show="showDialog" :dialog-option="dialogOptions" ref="dialogs"></v-dialog>
     <br>
     <br>
@@ -35,9 +36,10 @@
   </div>
 </template>
 <script>
-  var baseUrl = 'http://192.168.10.24:8888/';
+  var baseUrl = 'http://47.100.232.59:6688/';
   var gcpUrl = 'http://104.198.87.241:8088/ever/';
   import {formatDate} from './../common/date';
+  import Axios from 'axios';
 
   var fileInfo = [{fileName: 'ever', fileSize: 222, lastUpdateDate: formatDate(new Date(), 'yyyy-MM-dd'), fileId: 1}];
   // var fileInfo = [];
@@ -80,6 +82,7 @@
               fileInfo.push(maps[i]);
             }
           }, function (e) {
+            debugger
             alert('请求失败');
           })
       },
@@ -100,7 +103,7 @@
           info['fileType'] = files[i].type;
           info['lastUpdateDate'] = formatDate(new Date(), 'yyyy-MM-dd');
           fInfo[i] = info;
-          formdata.append("file", files[i]);
+          formdata.append("files", files[i]);
         }
         // formdata.append("files",files);
         var info = [
@@ -111,11 +114,13 @@
         // info['sourceType'] = 'cyy';
         // formdata.append('sysAttachment', new Blob([JSON.stringify(source)], {type: "application/json;charset=utf-8"}));
         // formdata.append('')
-        var url = baseUrl + 'api/sys/file/upload?sourceType=ever&sourceKey=1';
+        var type = "DOC_TEMPLATE_FERRY_TEST";
+        var url = baseUrl + 'api/sys/file/upload?sourceType=' + type + '&sourceKey=2';
         // return false;
-        this.$http.post(url, formdata, {
+        debugger
+        Axios.post(url, formdata, {
           headers:
-            {'Content-Type': 'multipart/form-data'}
+            {'Content-Type': 'multipart/form-data'} //,'_token': window.localStorage['token']
         }).then(function (res) {
           this.showDialog = true;
           this.$refs.dialogs.confirm().then((data) => {
@@ -140,16 +145,6 @@
           alert('请求失败');
         });
       return false;*/
-      this.$http.get('http://192.168.10.24:8888/api/temp/test/query?page=1&pageSize=41000', {
-        headers:
-          {'Content-Type': 'application/json;charset=utf-8'}
-      }).then(
-        function (res) {
-          this.task = res;
-        }, function (e) {
-          alert('请求失败');
-        });
-      return false;
 
 
     },

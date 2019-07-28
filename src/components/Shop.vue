@@ -8,12 +8,12 @@
     <br>
     go shopping
 
+    <img id="images" src="../assets/coyote.png" width="100" height="100"/>
 
     <input type="file" @change="importFile($event)" id="myFile" style="display: none;"
            accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
     <input type="file" v-on:change="test($event)" id="testFile"><!--是可以进到onload方法的呀，为什么excel的不行呢-->
     <button class="button" @click="uploadFile()">excel导入</button>
-
 
 
     <v-excel v-show="showExcel" ref="excel" :excel-data="excelData" :excel-name="excelName"></v-excel>
@@ -59,11 +59,11 @@
     name: 'Shop',
     data() {
       return {
-        myFile:'',
+        myFile: '',
         testFile: '',
         rABS: false,
         wb: {},
-        textContent:'',
+        textContent: '',
         IPhone_lists,
         showDialog: false,
         showExcel: true,
@@ -123,7 +123,7 @@
           }
         ],
         excelName: "menue.xlsx",
-        outFile:''
+        outFile: ''
       }
     },
     methods: {
@@ -141,12 +141,12 @@
       uploadFile() {
         this.myFile.click();
       },
-      test(){
+      test() {
         debugger
         let file = document.getElementById("testFile").files[0];
         let reader = new FileReader();
         let $t = this;
-        reader.onload = function(e) {
+        reader.onload = function (e) {
           debugger
           $t.textContent = e.target.result;
         };
@@ -156,13 +156,13 @@
         debugger
         var obj = this.myFile;
         var f = obj.files[0];
-        if (!obj.files)return false;
+        if (!obj.files) return false;
         var reader = new FileReader();
         var $t = this;
         reader.onload = function (e) {
           debugger
           let data = e.target.result;
-          $t.wb = XLSX.read(btoa($t.fixdata(data)),{type: 'base64'});
+          $t.wb = XLSX.read(btoa($t.fixdata(data)), {type: 'base64'});
           /*数据读到了，然后展示出来就可以啦*/
         };
         // reader.readAsBinaryString(f);
@@ -188,15 +188,23 @@
       }
     },
     mounted() {
-        this.myFile = document.getElementById("myFile");
+      this.myFile = document.getElementById("myFile");
+      document.getElementById('images').onload = function (e) {
+        debugger
+      }
     }
   }
+  var image = new Image(100, 100)
+  image.src = '../assets/coyote.png';
+  document.write(image);
+
 </script>
 
 <style scoped>
   body {
     background-color: #ffffff;
   }
+
   table {
     border: 1px solid black;
   }

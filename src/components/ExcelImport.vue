@@ -43,6 +43,7 @@
         var reader = new FileReader();
         var $t = this;
         reader.onload = function (e) {
+          debugger
           let data = e.target.result;
           $t.wb = XLSX.read(btoa($t.fixdata(data)), {type: 'base64'})
           /*处理数据*/

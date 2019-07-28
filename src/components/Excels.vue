@@ -7,6 +7,10 @@
 </template>
 
 <script>
+  import Vue from 'vue';
+  new Vue ({
+
+  });
   var XLSX = require('xlsx');
   export default ({
     name: 'Excels',
@@ -90,7 +94,7 @@
         document.getElementById("hf").href = href; //绑定a标签
         document.getElementById("hf").click(); //模拟点击实现下载
         setTimeout(function () { //延时释放
-          URL.revokeObjectURL(tmpDown); //用URL.revokeObjectURL()来释放这个object URL
+          URL.revokeObjectURL(href); //用URL.revokeObjectURL()来释放这个object URL
         }, 100);
       },
     }

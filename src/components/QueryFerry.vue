@@ -10,9 +10,10 @@
   </div>
 </template>
 <script>
-  var baseUrl = 'http://47.100.232.59';
+  var baseUrl = 'http://47.100.232.59:6688';
   var homeUrl = 'http://192.168.10.24:8888';
   var gender = [{value: 'FEMALE',name: '女'},{value: 'MALE',name: '男'}];
+  import Axios from 'axios';
   export default ({
     name: 'Ferry',
     data() {
@@ -73,7 +74,7 @@
       queryData: function () {
         let url = baseUrl + '/api/chinese/people/query';
         let param = {page: this.page, pageSize: this.pageSize};
-        this.$http.get(url, {params: param}).then(
+        Axios.get(url, {params: param}).then(
           res => {
             this.successHint = true;
             this.$refs.dialogSuc.confirm().then(

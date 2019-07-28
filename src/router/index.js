@@ -13,6 +13,7 @@ import Pages from '@/components/Pages'
 import Select from '@/components/Select'
 import ExcelShow from '@/components/ExcelShow'
 import Ferry from '@/components/QueryFerry'
+import store from 'vuex'
 
 Excels.install = function(Vue){
   Vue.component('v-excel', Excels);
@@ -36,6 +37,12 @@ Vue.use(Router);
 Vue.use(ExcelImport);
 Vue.use(Grids);
 Vue.use(Pages);
+Vue.use(store);
+
+// 页面刷新时，重新赋值token
+/*if (sessionStorage.getItem('token')) {
+  store.commit('set_token', sessionStorage.getItem('token'))
+}*/
 
 export default new Router({
   mode: 'history',
