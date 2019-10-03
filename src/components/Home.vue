@@ -9,6 +9,7 @@
     <div @click="pages"><p>pages</p></div>
     <div @click="select"><p>select</p></div>
     <div @click="ferry"><p>ferry</p></div>
+    <div @click="doc"><p>Doc</p></div>
   </div>
 </template>
 
@@ -45,6 +46,9 @@
       },
       ferry: function () {
         this.$router.push('/Ferry');
+      },
+      doc: function () {
+        this.$router.push('/10/02/Doc');
       }
     }
   })

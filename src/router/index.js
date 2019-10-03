@@ -14,6 +14,8 @@ import Select from '@/components/Select'
 import ExcelShow from '@/components/ExcelShow'
 import Ferry from '@/components/QueryFerry'
 import store from 'vuex'
+import Doc from '@/components/10/02/Doc'
+import DocDetails from '@/components/10/02/DocDetails'
 
 Excels.install = function(Vue){
   Vue.component('v-excel', Excels);
@@ -97,6 +99,17 @@ export default new Router({
       path: '/Ferry',
       name: './Ferry',
       component: Ferry
+    },
+    {
+      path: '/10/02/Doc',
+      name: './Doc',
+      component: Doc
+    },
+    {
+      path: '/10/02/DocDetails/:id',
+      name: './DocDetails',
+      component: DocDetails,
+      props: true
     }
   ]
 })

@@ -23,6 +23,8 @@
         <tbody>
         <tr v-for="entry in filteredData">
           <td v-for="item in columns" :style="'text-align:'+item.textAlign">{{ entry[item.field] }}
+            <a :class="{hide: item.field !== 'vFix'}" style="cursor: pointer;color: blue;font-size: 15px;"
+               @click="jump(entry[item.id])">修改</a>
           </td>
         </tr>
         </tbody>
@@ -58,7 +60,8 @@
         sortKey: '',
         data: [],
         orderCom: [1],
-        currentPage: 1
+        currentPage: 1,
+        path: ""
       }
     },
     watch: {},
@@ -72,7 +75,10 @@
         for (let i = 1; i < tr.length; i++) {
           for (let j = 0; j < self.columns.length; j++) {
             if ('template' in self.columns[j]) {
-              tr[i].getElementsByTagName('td')[j].innerText = self.columns[j].template(this.gridData[i - 1], tr[i].getElementsByTagName('td')[j].innerText, i, this);
+              tr[i].getElementsByTagName('td')[j].innerHTML = self.columns[j].template(this.gridData[i - 1], tr[i].getElementsByTagName('td')[j].innerText, i, this);
+            }
+            if ('path' in self.columns[j]) {
+              this.path = self.columns[j]['path'];
             }
           }
         }
@@ -86,10 +92,14 @@
         this.orderCom = [this.orderCom[0] + 1];
         this.sortKey = key;
         this.sortOrders[key] = this.sortOrders[key] * -1;
+      },
+      jump(url) {
+        this.$router.push(this.path + url);
       }
     },
     computed: {
       filteredData: function () {
+        debugger
         /*在此处进行排序和搜索*/
         /*sortOrders改变后不仅此方法which I don't know why 所以加了一个变量*/
         let fix = this.orderCom;
@@ -143,6 +153,14 @@
   })
 </script>
 <style scoped>
+  .show {
+    display: block;
+  }
+
+  .hide {
+    display: none;
+  }
+
   .grid-title {
     width: 80%;
     margin: auto auto 10px auto;

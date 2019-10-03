@@ -1,5 +1,5 @@
 <template>
-  <div id="cyy" style="display:block;">
+  <div id="cyy" style="display:block;margin-bottom: 80%">
     <!--<img src="./assets/head.png">-->
     <router-view/>
   </div>

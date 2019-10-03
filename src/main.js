@@ -29,13 +29,13 @@ Axios.interceptors.request.use(config => {
 // http response 拦截器
 Axios.interceptors.response.use(
   response => {
-    debugger
-    // 401 如果有token就更新token再次发送氢气，没有token就跳到登录页面重新登录
+    // 401 如果有token就更新token再次发送请求，没有token就跳到登录页面重新登录
     if (response.data.code == 401) {
       if (response.headers._token) {
         response.config.headers.common['_token'] = response.headers._token;
         return Axios.request(response.config);
       } else {
+        response.config.headers.common['_token'] = null;
         router.replace({
           path: '/',
           query: {redirect: router.currentRoute.fullPath}//登录成功后跳入浏览的当前页面
@@ -46,15 +46,16 @@ Axios.interceptors.response.use(
     }
   },
   error => {
-    debugger
     if (error.response) {
-      switch (error.response.status) {
-        case 401:
-          this.$store.commit('del_token');
-          router.replace({
-            path: '/',
-            query: {redirect: router.currentRoute.fullPath}//登录成功后跳入浏览的当前页面
-          })
+      if (error.response.data === "refresh token") {
+        response.config.headers.common['_token'] = response.headers._token;
+        return Axios.request(response.config);
+      } else {
+        response.config.headers.common['_token'] = null;
+        router.replace({
+          path: '/',
+          query: {redirect: router.currentRoute.fullPath}//登录成功后跳入浏览的当前页面
+        })
       }
     }
     return Promise.reject(error.response.data)
