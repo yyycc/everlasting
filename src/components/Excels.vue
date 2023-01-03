@@ -47,7 +47,6 @@
         return buf;
       },
       downloadFile(json, type) {
-        debugger
         json.unshift({});
         var keyMap = [];//获取keys
         for (var k in json[1]) {

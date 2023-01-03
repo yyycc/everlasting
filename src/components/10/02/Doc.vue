@@ -105,7 +105,6 @@
       let param = {page: this.page, pageSize: this.pageSize};
       Axios.get(url, {params: param}).then(
         res => {
-          debugger
           if (res.data.maps) {
             this.data = res.data.maps;
             this.excelData = res.data.maps;

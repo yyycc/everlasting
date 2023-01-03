@@ -99,7 +99,6 @@
     },
     computed: {
       filteredData: function () {
-        debugger
         /*在此处进行排序和搜索*/
         /*sortOrders改变后不仅此方法which I don't know why 所以加了一个变量*/
         let fix = this.orderCom;

@@ -142,25 +142,21 @@
         this.myFile.click();
       },
       test() {
-        debugger
         let file = document.getElementById("testFile").files[0];
         let reader = new FileReader();
         let $t = this;
         reader.onload = function (e) {
-          debugger
           $t.textContent = e.target.result;
         };
         reader.readAsText(file);
       },
       importFile() {
-        debugger
         var obj = this.myFile;
         var f = obj.files[0];
         if (!obj.files) return false;
         var reader = new FileReader();
         var $t = this;
         reader.onload = function (e) {
-          debugger
           let data = e.target.result;
           $t.wb = XLSX.read(btoa($t.fixdata(data)), {type: 'base64'});
           /*数据读到了，然后展示出来就可以啦*/
@@ -190,7 +186,7 @@
     mounted() {
       this.myFile = document.getElementById("myFile");
       document.getElementById('images').onload = function (e) {
-        debugger
+        console.log(e)
       }
     }
   }

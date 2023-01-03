@@ -82,7 +82,6 @@
               fileInfo.push(maps[i]);
             }
           }, function (e) {
-            debugger
             alert('请求失败');
           })
       },
@@ -117,7 +116,6 @@
         var type = "DOC_TEMPLATE_FERRY_TEST";
         var url = baseUrl + 'api/sys/file/upload?sourceType=' + type + '&sourceKey=2';
         // return false;
-        debugger
         Axios.post(url, formdata, {
           headers:
             {'Content-Type': 'multipart/form-data'} //,'_token': window.localStorage['token']

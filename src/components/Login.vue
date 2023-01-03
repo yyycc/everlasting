@@ -59,7 +59,6 @@
             {'Content-Type': 'application/json;charset=utf-8'}
         }).then(
           function (res) {
-            debugger
             this.task = res;
             /*this.$store.commit("set_token",res.body.token);
             if (this.$store.state.token) {

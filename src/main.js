@@ -13,7 +13,6 @@ Axios.defaults.headers.common['_token'] = localStorage.token;
 
 // 添加请求拦截器
 Axios.interceptors.request.use(config => {
-  debugger
 // 在发送请求之前做些什么
 //判断是否存在token，如果存在将每个页面header都添加token
   if (localStorage.token) {

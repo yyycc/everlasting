@@ -97,7 +97,6 @@
         this.$emit('current-page', this.index);
       },
       go: function () {
-        debugger
         let page = Number(this.pageInput);
         if (page < 1 || page > this.pages) {
           this.pageInput = this.pages;
